@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yangjinjing.article.mapper.ArticleMapper">
+	<select id="list" resultType="com.yangjinjing.article.entity.Article">
+		select a.title,a.created,a.commentCnt,b.username 
+		from cms_article as a,cms_user as b where a.user_id = b.id 
+		<if test="beginDate != null and beginDate != ''">
+			and a.created > #{beginDate }
+		</if>
+		<if test="endDate != null and endDate != ''">
+			and a.created &lt; #{endDate} 
+		</if>
+		group by a.id 
+		<if test="orderValue == 1">
+			ORDER BY a.commentCnt DESC
+		</if>
+		<if test="orderValue == 2">
+			ORDER BY a.created DESC
+		</if>
+		<if test="orderValue == 3">
+			order by b.username
+		</if>
+	</select>
+
+	 
+</mapper>
